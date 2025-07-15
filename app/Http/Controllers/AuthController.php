@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,11 +17,11 @@ class AuthController extends Controller
     public function register(Request $request) {
 
         $validator = Validator::make($request->all(), [
-            'nom'=> 'required|string',
-            'pseudo'=> 'required|string|unique:users',
+            'pseudo'=> 'required|string|unique:tenant.user',
             'role' => 'required|string',
             'password'=> 'required|min:8',
         ]);
+
 
         if($validator->fails()){
             $error = $validator->errors();
@@ -49,6 +50,7 @@ class AuthController extends Controller
             ],201);
         }
 
+
     }
     public function authenticate(Request $request)  {
         if(!Auth::attempt($request->only('pseudo', 'password'))){
@@ -75,5 +77,46 @@ class AuthController extends Controller
     public function user(Request $request): User {
 
         return $request->user();
+    }
+
+    public function update(Request $request, /*User $user*/){
+
+        $validator = Validator::make($request->all(), [
+            'id_user'=> 'required|string',
+            'nom'=> 'required|string',
+            'prenom' => 'required|string',
+            'email'=> 'required|string',
+            'sexe'=> 'required|string',
+            'date_naissance'=> 'required|string',
+            'lieu_naissance'=> 'required|string',
+        ]);
+
+        if($validator->fails()){
+            $error = $validator->errors();
+            return response()->json([
+                'message' => "Un erreur s'est produit",
+                'errors' => $error,
+                'status' => 401,
+            ],401);
+        }
+        $user = User::find($request->id_user);
+
+        if($validator->passes()){
+            $user->update([
+                'nom'=> $request->nom,
+                'prenom'=> $request->prenom,
+                'email'=> $request->email,
+                'sexe'=> $request->sexe,
+                'date_naissance'=> $request->date_naissance,
+                'lieu_naissance'=> $request->lieu_naissance,
+                'telephone'=> $request->telephone,
+                'photo'=> $request->photo,
+            ]);
+
+            return response()->json([
+                'message' => "Mise à jour du profile avec succès",
+                'status' => 201,
+            ],201);
+        }
     }
 }

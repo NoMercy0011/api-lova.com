@@ -28,9 +28,7 @@ Route::post('login', [AuthController::class, 'authenticate']);
 
 
 Route::middleware('tenant.auth' )->group(function (){
-    Route::get('user', function(Request $request){
-        return response()->json($request->user());
-    });
+    Route::get('user', [AuthController::class, 'user']);
+    Route::put( 'user-update', [AuthController::class, 'update']);
 });
 
-Route::post('/send-message', [MessageUpdatedController::class, 'send']);

@@ -27,7 +27,7 @@ class InitializeTenancyByHeader
                 'message' => ' Client non spécifié, ID-client manquant',
             ], 403);
         }
-        $tenant = Tenant::where('slug' ,$tenantID)->first();
+        $tenant = Tenant::where('etablissement' ,$tenantID)->first();
 
         if(!$tenant){
             //abort(404, 'Client non trouvé');

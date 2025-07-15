@@ -10,20 +10,14 @@ class Tenant extends BaseTenant
     protected $primaryKey = 'id';
     protected $fillable = [
         'id',
-        'nom',
-        'slug',
+        'non_client',
+        'etablissement',
         'database',
+        'contact',
+        'addresse',
+        'dot_env',
     ];
     protected $casts = [
         // don't cast 'data' anymore
     ];
-
-    // public static function getCustomColumns(): array
-    // {
-    //     return [
-    //         'id',
-    //         'slug',
-    //         'database',
-    //     ];
-    // }
 }
