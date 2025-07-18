@@ -27,7 +27,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware([
     'api',
     'tenant.auth',
-    InitializeTenancyByHeader::class,
 ])->group(function () {
 
     Route::get('livre' , [EstimateBookController::class, 'livre']);

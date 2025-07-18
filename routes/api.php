@@ -32,9 +32,8 @@ Route::middleware('tenant.auth' )->group(function (){
     Route::put( 'user-update', [AuthController::class, 'update']);
 });
 
-Route::get('hello', function () {
+Route::get('hello', function(){
     return response()->json([
-        'message' => 'Hello Render',
+        'message' => 'Hello AlwaysData !!'
     ]);
 });
-
