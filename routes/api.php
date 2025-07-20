@@ -34,6 +34,7 @@ Route::middleware('tenant.auth' )->group(function (){
 
 Route::get('hello', function(){
     return response()->json([
-        'message' => 'Hello AlwaysData !!'
-    ]);
-});
+        'message' => 'Hello AlwaysData !!',
+        'database' => DB::connection()->getDatabaseName(),
+   ]);
+})->middleware(InitializeTenancyByHeader::class);
