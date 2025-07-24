@@ -38,9 +38,11 @@ class VerifyTenantToken
                 'Database' => DB::connection('tenant')->getDatabaseName(),
             ],401);
         }
+        
+        $user = $accessToken->tokenable ?? null;
 
-        $request->setUserResolver(function() use($accessToken) {
-            return $accessToken->tokenable;
+        $request->setUserResolver(function() use($user) {
+            return $user;
         });
         return $next($request);
     }

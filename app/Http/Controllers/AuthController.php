@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tenant;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -34,10 +31,10 @@ class AuthController extends Controller
 
         if($validator->passes()){
             $user = User::create([
-                'nom'=> $request->nom,
-                'pseudo'=> $request->pseudo,
-                'role' => $request->role,
-                'password'=> hash::make($request->password),
+                'nom'=> $request->nom ?? null,
+                'pseudo'=> $request->pseudo ?? null,
+                'role' => $request->role ?? null,
+                'password'=> hash::make($request->password ?? null),
             ]);
 
             $token = $user->createToken(time())->plainTextToken;
@@ -60,9 +57,9 @@ class AuthController extends Controller
             ],401);
         }
 
-        $user = User::where('pseudo', $request->pseudo)-> first();
+        $user = User::where('pseudo', $request->pseudo ?? null)-> first();
 
-        if(Hash::check($request ->password, $user->password )){
+        if(Hash::check($request ->password ?? null, $user->password )){
             return response()->json([
                 'token' => $user->createToken(time())->plainTextToken,
                 'status' => 201,
@@ -79,10 +76,27 @@ class AuthController extends Controller
         return $request->user();
     }
 
-    public function update(Request $request, /*User $user*/){
+    public function getEnseignant(Request $request){
+        $enseignants = User::all()->map( function ($item){
+            return [
+                'id_enseignant' => $item->id_user ?? null,
+                'nom' => $item->nom ?? null,
+                'prenom' => $item->prenom ?? null,
+                'pseudo' => $item->pseudo ?? null,
+                'sexe' => $item->sexe ?? null,
+            ];
+        });
+        return response()->json([
+            'enseignant' =>$enseignants
+        ], 200);
+    }
+
+    public function update(Request $request, User $user){
+        $user = $request->user();
+        $id_user = $user->id_user ?? null;
 
         $validator = Validator::make($request->all(), [
-            'id_user'=> 'required|string',
+            //'id_user'=> 'required|string',
             'nom'=> 'required|string',
             'prenom' => 'required|string',
             'email'=> 'required|string',
@@ -99,24 +113,18 @@ class AuthController extends Controller
                 'status' => 401,
             ],401);
         }
-        $user = User::find($request->id_user);
+        $userToUpdate = User::find($id_user);
+        // if($validator->passes()){
+        $userToUpdate->update( $request->all());
 
-        if($validator->passes()){
-            $user->update([
-                'nom'=> $request->nom,
-                'prenom'=> $request->prenom,
-                'email'=> $request->email,
-                'sexe'=> $request->sexe,
-                'date_naissance'=> $request->date_naissance,
-                'lieu_naissance'=> $request->lieu_naissance,
-                'telephone'=> $request->telephone,
-                'photo'=> $request->photo,
-            ]);
-
-            return response()->json([
+        return response()->json([
                 'message' => "Mise à jour du profile avec succès",
                 'status' => 201,
+                'user' => $user
             ],201);
-        }
+
+            
+            
+        // }
     }
 }

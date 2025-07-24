@@ -15,11 +15,11 @@ class User extends Authenticatable
     protected $table = 'user';
     protected  $primaryKey= 'id_user';
      protected $fillable = [
-        'email',
         'pseudo',
         'password',
         'nom',
         'prenom',
+        'email',
         'sexe',
         'date_naissance',
         'lieu_naissance',
@@ -33,7 +33,25 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    // public function devisLivres(){
-    //     return $this->hasMany(DevisLivre::class, 'personnel', 'id');
-    // }
+    public function etablissementChefs(){
+        return $this->hasMany(Etablissement::class, 'user_id', 'id_user');
+    }
+
+    public function etablissementEditeurs(){
+        return $this->hasMany(Etablissement::class, 'editeur_id', 'id_user');
+    }
+
+    public function classeResponsables(){
+        return $this->hasMany(Classe::class, 'responsable_id', 'id_user');
+    }
+
+    public function enseignementUsers(){
+        return $this->hasMany(Enseignement::class, 'enseignant_id', 'id_user');
+    }
+    public function enseignementDeleters(){
+        return $this->hasMany(Enseignement::class, 'suppresseur_id', 'id_user');
+    }
+    public function noteEnseignants(){
+        return $this->hasMany(Note::class, 'enseignant_id', 'id_user');
+    }
 }

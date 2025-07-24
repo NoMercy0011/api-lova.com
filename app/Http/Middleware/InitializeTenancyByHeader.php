@@ -33,7 +33,7 @@ class InitializeTenancyByHeader
             //abort(404, 'Client non trouvé');
             return response()->json([
                 'status' => 404,
-                'message' => "Client non trouvé, ID-client peut être incorrecte",
+                'message' => "Etablissement Introuvalble ou incorrecte",
             ], 404);
         }
 
@@ -46,8 +46,8 @@ class InitializeTenancyByHeader
             'driver' => 'mysql',
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => $tenant->database,
-            'username' => env($tenant->dot_env),
+            'database' => $tenant->database ?? null,
+            'username' => env($tenant->dot_env  ?? null),
             'password' => env('DB_PASSWORD'),
         ]);
 

@@ -77,18 +77,18 @@ class EstimateBookController extends Controller
             $personnel = $request->user();
 
             $estimate = DevisLivre::create([
-                'livre'=> $request->type,
-                'dimension'=> $request->dimension,
-                'papier' => $request->papier,
-                'couleur'=> $request->couleur,
-                'recto_verso'=> $request->recto_verso,
-                'pages'=> $request->pages,
-                'couverture'=> $request->couverture,
-                'reliure'=> $request->reliure,
-                'finition'=> $request->finition,
-                'quantite'=> $request->quantite,
-                'montant'=> $request->montant,
-                'personnel'=> $personnel->id,
+                'livre'=> $request->type ?? null,
+                'dimension'=> $request->dimension ?? null,
+                'papier' => $request->papier ?? null,
+                'couleur'=> $request->couleur ?? null,
+                'recto_verso'=> $request->recto_verso ?? null,
+                'pages'=> $request->pages ?? null,
+                'couverture'=> $request->couverture ?? null,
+                'reliure'=> $request->reliure ?? null,
+                'finition'=> $request->finition ?? null,
+                'quantite'=> $request->quantite ?? null,
+                'montant'=> $request->montant ?? null,
+                'personnel'=> $personnel->id ?? null,
 
             ]);
 

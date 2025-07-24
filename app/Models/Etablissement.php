@@ -8,16 +8,28 @@ use Illuminate\Database\Eloquent\Model;
 class Etablissement extends Model
 {
     use HasFactory;
-
     protected $connection = 'tenant';
-    protected  $primaryKey = 'id_etablissement';
+
+    protected $primaryKey = 'id_etablissement';
+
+    protected $table = 'etablissement';
 
     protected $fillable = [
         'etablissement',
-        'chef_etablissement',
+        'ville',
+        'region',
+        'user_id',
         'contact',
         'code',
         'email',
-        'editeur',
+        'adresse',
+        'editeur_id'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id', 'id_user');
+    }
+    public function editeur(){
+        return $this->belongsTo(User::class, 'user_id', 'id_user');
+    }
 }
