@@ -48,7 +48,7 @@ class InitializeTenancyByHeader
             'port' => env('DB_PORT', '3306'),
             'database' => $tenant->database ?? null,
             'username' => env($tenant->dot_env ?? null, 'api-lova'),
-            'password' => env('DB_PASSWORD'),
+            'password' => $tenant->password ?? null | env('DB_CLIENT_PASSWORD'),
         ]);
 
         DB::purge('tenant');
