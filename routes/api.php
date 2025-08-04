@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('register', [AuthController::class, 'register']);
+//Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'authenticate']);
 
 
@@ -28,6 +28,6 @@ Route::middleware('tenant.auth' )->group(function (){
 Route::get('hello', function(){
     return response()->json([
         'message' => 'Hello AlwaysData !!',
-        'database' => DB::connection()->getDatabaseName(),
+        'database' => DB::connection('tenant')->getDatabaseName(),
    ]);
 });

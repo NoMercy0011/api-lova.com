@@ -17,6 +17,7 @@ class Classe extends Model
     protected $fillable =[
         'classe',
         'niveau_id',
+        'section_id',
         'responsable_id',
         'annee_scolaire_id',
     ];
@@ -24,11 +25,14 @@ class Classe extends Model
         return $this->belongsTo(Niveau::class, 'niveau_id', 'id_niveau');
     }
     public function responsable(){
-        return $this->belongsTo(User::class, 'responsable_id', 'id_user');
+        return $this->belongsTo(EnseignantActive::class, 'responsable_id', 'id_enseignant_active');
     }
 
     public function anneeScolaire(){
         return $this->belongsTo(AnneeScolaire::class, 'annee_scolaire_id', 'id_annee_scolaire');
+    }
+    public function section(){
+        return $this->belongsTo(Section::class, 'section_id', 'id_section');
     }
     public function inscriptions(){
         return $this->hasMany(Inscription::class, 'classe_id', 'id_classe');

@@ -9,7 +9,10 @@ use Illuminate\Support\Facades\Validator;
 class NiveauController extends Controller
 {
     public function get(){
-
+         $niveaux = Niveau::all();
+        return response()->json([
+            'niveaux' => $niveaux,
+        ]);
     }
     public function create(Request $request){
         $validator = Validator::make($request->all(), [

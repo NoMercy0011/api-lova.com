@@ -5,12 +5,13 @@ declare(strict_types=1);
 use App\Http\Controllers\AnneeScolaireController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClasseController;
+use App\Http\Controllers\EnseignantController;
 use App\Http\Controllers\EnseignementController;
 use App\Http\Controllers\EtablissementController;
 use App\Http\Controllers\EtudiantController;
 use App\Http\Controllers\MatiereController;
 use App\Http\Controllers\NiveauController;
-use App\Models\Enseignement;
+use App\Http\Controllers\SectionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,8 +33,11 @@ Route::middleware([
 
     Route::get('etablissement' , [EtablissementController::class, 'get']);
 
-    Route::middleware('role:admin')->group(function(){
+    Route::middleware('role:Admin')->group(function(){
+        
+        Route::post('register', [AuthController::class, 'register']);
 
+        Route::put('classe', [ClasseController::class, 'update']);
         Route::put( 'etablissement', [EtablissementController::class, 'update']);
         
         Route::post('etudiant', [EtudiantController::class, 'create']);
@@ -46,10 +50,13 @@ Route::middleware([
         Route::post('classe', [ClasseController::class, 'create']);
         Route::post('enseignement', [EnseignementController::class, 'create']);
         Route::post('inscription', [EtudiantController::class, 'create']);
-
+        
+        Route::get('niveau', [NiveauController::class, 'get']);
         Route::get('matiere', [MatiereController::class, 'get']);
         Route::get('classe', [ClasseController::class, 'get']);
-        Route::get('enseignant', [AuthController::class, 'getEnseignant']);
+        Route::get('enseignants', [EnseignantController::class, 'getEnseignant']); 
+        Route::get('enseignants-quitte', [EnseignantController::class, 'getEnseignantQuitte']); 
         Route::get('enseignement', [EnseignementController::class, 'get']);
+        Route::get('section', [SectionController::class, 'get']);
     });
 });

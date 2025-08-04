@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EnseignantActive;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -30,24 +32,34 @@ class AuthController extends Controller
         }
 
         if($validator->passes()){
-            $user = User::create([
+             $user =  User::create([
                 'nom'=> $request->nom ?? null,
+                'prenom'=> $request->prenom ?? null,
                 'pseudo'=> $request->pseudo ?? null,
+                'photo'=> $request->photo ?? null,
+                'date_naissance'=> $request->date_naissance ?? null,
+                'lieu_naissance'=> $request->lieu_naissance ?? null,
+                'email'=> $request->email ?? null,
+                'sexe'=> $request->sexe ?? null,
+                'telephone'=> $request->telephone ?? null,
                 'role' => $request->role ?? null,
                 'password'=> hash::make($request->password ?? null),
             ]);
 
-            $token = $user->createToken(time())->plainTextToken;
+            $enseignant =  EnseignantActive::create([
+                'user_id' => $user->id_user ?? null,
+                'section_id'=> $request->section ?? null,
+                'salaire'=> $request->salaire ?? null,
+                'date_entree' => $request->date_entree ?? new DateTime( now()),
+            ]);
+
             return response()->json([
                 'message' => "Inscription réussie",
-                'accusée' => $user,
-                'token' => $token,
-                'type' => 'Bearer',
+                'user' => $user,
+                'enseignant' => $enseignant,
                 'status' => 201,
             ],201);
         }
-
-
     }
     public function authenticate(Request $request)  {
         if(!Auth::attempt($request->only('pseudo', 'password'))){
@@ -74,21 +86,6 @@ class AuthController extends Controller
     public function user(Request $request): User {
 
         return $request->user();
-    }
-
-    public function getEnseignant(Request $request){
-        $enseignants = User::all()->map( function ($item){
-            return [
-                'id_enseignant' => $item->id_user ?? null,
-                'nom' => $item->nom ?? null,
-                'prenom' => $item->prenom ?? null,
-                'pseudo' => $item->pseudo ?? null,
-                'sexe' => $item->sexe ?? null,
-            ];
-        });
-        return response()->json([
-            'enseignant' =>$enseignants
-        ], 200);
     }
 
     public function update(Request $request, User $user){

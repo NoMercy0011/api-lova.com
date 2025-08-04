@@ -41,10 +41,6 @@ class User extends Authenticatable
         return $this->hasMany(Etablissement::class, 'editeur_id', 'id_user');
     }
 
-    public function classeResponsables(){
-        return $this->hasMany(Classe::class, 'responsable_id', 'id_user');
-    }
-
     public function enseignementUsers(){
         return $this->hasMany(Enseignement::class, 'enseignant_id', 'id_user');
     }
@@ -53,5 +49,11 @@ class User extends Authenticatable
     }
     public function noteEnseignants(){
         return $this->hasMany(Note::class, 'enseignant_id', 'id_user');
+    }
+    public function enseignantsActives(){
+        return $this->hasMany(EnseignantActive::class, 'user_id', 'id_user');
+    }
+    public function enseignantsQuittes(){
+        return $this->hasMany(EnseignantQuitte::class, 'user_id', 'id_user');
     }
 }
