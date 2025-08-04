@@ -47,7 +47,7 @@ class InitializeTenancyByHeader
             'host' => env('DB_HOST', 'mysql-api-lova.alwaysdata.net'),
             'port' => env('DB_PORT', '3306'),
             'database' => $tenant->database ?? null,
-            'username' => env($tenant->dot_env  ?? null),
+            'username' => env($tenant->dot_env ?? null, 'api-lova'),
             'password' => env('DB_PASSWORD'),
         ]);
 
