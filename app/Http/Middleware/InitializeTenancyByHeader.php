@@ -44,7 +44,7 @@ class InitializeTenancyByHeader
 
         Config::set( "database.connections.tenant",[
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST', 'mysql-api-lova.alwaysdata.net'),
             'port' => env('DB_PORT', '3306'),
             'database' => $tenant->database ?? null,
             'username' => env($tenant->dot_env  ?? null),
